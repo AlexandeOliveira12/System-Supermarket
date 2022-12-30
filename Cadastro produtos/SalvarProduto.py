@@ -6,6 +6,10 @@ import mysql.connector
 
 from decouple import config
 
+from datetime import datetime
+
+import socket
+
 # Criando layout
 def janela_cadastro_produtos():
  sg.theme('Material1')
@@ -35,6 +39,8 @@ while True:
         Valor = cadastro['Valor']
         Qntd = cadastro['Qntd']
         Check = cadastro['Check']
+        data = datetime.now()
+        IP = socket.gethostbyname(socket.gethostname())
         print(f'{item}, {código}, {Valor}, {Qntd}, {Check}')
         sg.popup('Produto cadastrado com sucesso')
         break
@@ -48,9 +54,9 @@ while True:
 myconnection = mysql.connector.connect(host=config("localhost"), user='root', password=config("password"), database=config("database"))
     
 cursor = myconnection.cursor()
-sql = "INSERT INTO Produtos (Nome, valor, Código, Qntd, ItemEmEstoque) VALUE (%s, %s, %s, %s, %s)"
+sql = "INSERT INTO Produtos (Horario, IP, Nome, valor, Código, Qntd, ItemEmEstoque) VALUE (%s, %s, %s, %s, %s, %s, %s)"
 value = [
-(item, Valor, código, Qntd, Check)
+(data, IP, item, Valor, código, Qntd, Check)
 ]
 cursor.executemany(sql, value)
 myconnection.commit()

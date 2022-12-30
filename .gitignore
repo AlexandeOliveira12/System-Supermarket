@@ -1,8 +1,4 @@
-.sql
-Cadastro produtos/sql/Supermercado.sql
-sql
-
-./Cadastro produtos/sql/
+sql/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

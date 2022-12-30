@@ -7,6 +7,10 @@ import mysql.connector
 
 from decouple import config
 
+import socket
+
+
+
 # Criando layout
 def janela_pagamento_produtos():
  sg.theme('Material1')
@@ -38,14 +42,16 @@ while True:
         CD = valores['CheckCD']
         D = valores['CheckD']
         data = datetime.now()
+        IP = socket.gethostbyname(socket.gethostname())
+        
         
         #Criando conexão e inserindo os inputs
         myconnection = mysql.connector.connect(host=config("localhost"), user='root', password=config("password"), database=config("database"))
     
         cursor = myconnection.cursor()
-        sql = "INSERT INTO HistoricoCompras (Horario, item, valor, CC, CD, D) VALUE (%s, %s, %s, %s, %s, %s)"
+        sql = "INSERT INTO HistoricoCompras (Horario, IP, item, valor, CC, CD, D) VALUE (%s, %s, %s, %s, %s, %s, %s)"
         value = [
-        (data, item, valor, CC, CD, D)
+        (data, IP, item, valor, CC, CD, D)
         ]
         cursor.executemany(sql, value)
         myconnection.commit()
