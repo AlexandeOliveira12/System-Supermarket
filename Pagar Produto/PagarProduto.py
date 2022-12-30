@@ -1,12 +1,16 @@
 # Importando biblioteca do PySimpleGUI
 from PySimpleGUI import PySimpleGUI as sg  
 
+#Biblioteca para pegar data e hora
 from datetime import datetime
 
+#Cria conexão Mysql
 import mysql.connector
 
+#Esconde informações importantes
 from decouple import config
 
+#Pega IP
 import socket
 
 

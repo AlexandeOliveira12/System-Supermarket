@@ -1,13 +1,17 @@
 
-# Importando biblioteca do PySimpleGUI
+#Biblioteca Interface
 from PySimpleGUI import PySimpleGUI as sg 
 
+#Cria conexão com o Mysql
 import mysql.connector    
 
+#Esconder dados importantes
 from decouple import config
 
+#Biblioteca para Pegar data e hora
 from datetime import datetime
 
+#Biblioteca para pegar IP
 import socket
 
 # Criando layout
@@ -34,6 +38,7 @@ while True:
         break
     
     if eventos == 'Cadastrar Produto':
+        
         item = cadastro['Item']
         código = cadastro['Código']
         Valor = cadastro['Valor']
@@ -41,29 +46,24 @@ while True:
         Check = cadastro['Check']
         data = datetime.now()
         IP = socket.gethostbyname(socket.gethostname())
+
+        #Criando conexão e inserindo dados
+        myconnection = mysql.connector.connect(host=config("localhost"), user='root', password=config("password"), database=config("database"))
+    
+        cursor = myconnection.cursor()
+        sql = "INSERT INTO Produtos (Horario, IP, Nome, valor, Código, Qntd, ItemEmEstoque) VALUE (%s, %s, %s, %s, %s, %s, %s)"
+        value = [
+        (data, IP, item, Valor, código, Qntd, Check)
+        ]
+        cursor.executemany(sql, value)
+        myconnection.commit()
+        print(cursor.rowcount, "Registro inserido")
+
+        #Fechando conexão
+        myconnection.is_connected() 
+        cursor.close()
+        myconnection.close()
+        print("Conexao ao MySql foi encerrada")
         print(f'{item}, {código}, {Valor}, {Qntd}, {Check}')
         sg.popup('Produto cadastrado com sucesso')
-        break
-    
-    item = item
-    código = código
-    Valor = Valor
-    Qntd = Qntd
-    Check = Check   
-      
-myconnection = mysql.connector.connect(host=config("localhost"), user='root', password=config("password"), database=config("database"))
-    
-cursor = myconnection.cursor()
-sql = "INSERT INTO Produtos (Horario, IP, Nome, valor, Código, Qntd, ItemEmEstoque) VALUE (%s, %s, %s, %s, %s, %s, %s)"
-value = [
-(data, IP, item, Valor, código, Qntd, Check)
-]
-cursor.executemany(sql, value)
-myconnection.commit()
-print(cursor.rowcount, "Registro inserido")
-
-if myconnection.is_connected(): 
-    cursor.close()
-    myconnection.close()
-    print("Conexao ao MySql foi encerrada")    
-
+        break   
