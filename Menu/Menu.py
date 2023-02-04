@@ -29,7 +29,6 @@ while True:
         break
     
     
-    
     #-------------------CADASTRAR PRODUTOS------------------------#
     if eventoMenu == 'Cadastrar produtos':
         layoutCadastro = [
@@ -62,7 +61,7 @@ while True:
             IP = socket.gethostbyname(socket.gethostname())
             
             #Criando conexão e inserindo dados
-        myconnection = mysql.connector.connect(host=config("localhost"), user='root', password=config("password"), database=config("database"))
+        myconnection = mysql.connector.connect(host=config("localhost"), user='root', password=config("password"), database=config("DatabaseCadastro"))
     
         cursor = myconnection.cursor()
         sql = "INSERT INTO Produtos (Horario, IP, Nome, valor, Código, Qntd, ItemEmEstoque) VALUE (%s, %s, %s, %s, %s, %s, %s)"
@@ -113,7 +112,7 @@ while True:
             IP = socket.gethostbyname(socket.gethostname())
             
             #Criando conexão com o banco de dados e inserindo os inputs
-            myconnection = mysql.connector.connect(host=config("localhost"), user='root', password=config("password"), database=config("database"))
+            myconnection = mysql.connector.connect(host=config("localhost"), user='root', password=config("password"), database=config("DatabaseCompra"))
     
             cursor = myconnection.cursor()
             sql = "INSERT INTO HistoricoCompras (Horario, IP, item, valor, CC, CD, D) VALUE (%s, %s, %s, %s, %s, %s, %s)"
